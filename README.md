@@ -19,6 +19,42 @@ npm run preview   # preview the production build locally
 - `src/data/press.js` — press release content
 - `src/App.jsx` — route definitions
 
+## Deployment
+
+Pushes to this branch (and to `main`) auto-deploy to GitHub Pages via
+`.github/workflows/deploy.yml`. The repo has a `public/CNAME` pointing at
+`ganeshotsavberlin.com`, so the site is built to be served from that domain's
+root — **this is prepared but not yet live**; GitHub Pages only actually
+serves the custom domain once its DNS points there.
+
+**Interim preview** (before DNS is switched): https://rutwik1994.github.io/ganeshotsav-berlin/
+Because the build now uses root-relative asset paths (required for the custom
+domain), this interim link will be unstyled/broken until the domain cutover
+below is done — that's expected, not a bug. Use `npm run dev` locally to
+preview in the meantime.
+
+**To point ganeshotsavberlin.com at this site**, whoever manages the domain's
+DNS needs to, at the registrar/DNS provider:
+
+1. Add these four **A** records for the apex domain (`@`):
+   ```
+   185.199.108.153
+   185.199.109.153
+   185.199.110.153
+   185.199.111.153
+   ```
+   (Optionally, **AAAA** records for IPv6: `2606:50c0:8000::153`,
+   `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153`.)
+2. If `www.ganeshotsavberlin.com` should also work, add a **CNAME** record for
+   `www` → `rutwik1994.github.io`.
+3. Once DNS has propagated (can take minutes to hours), go to the repo's
+   **Settings → Pages** and confirm the custom domain shows as verified, then
+   check **Enforce HTTPS** once the certificate is issued.
+
+⚠️ **Heads up:** the domain currently points at the existing live site. Once
+DNS is switched to the values above, this rebuild replaces it — so only do
+this when the rebuild (see gaps below) is actually ready to go live.
+
 ## Known gaps / follow-ups
 
 This was rebuilt from a set of saved pages from the live site plus its structured
