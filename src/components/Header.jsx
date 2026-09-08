@@ -51,17 +51,23 @@ function Dropdown({ label, items }) {
         <ChevronDownIcon className="size-5 flex-none text-gray-400 group-hover:text-orange-600 transition-colors" />
       </button>
       {open && (
-        <div className="absolute left-1/2 z-10 mt-2 w-56 -translate-x-1/2 rounded-xl bg-white p-2 shadow-lg ring-1 ring-gray-900/5">
-          {items.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-orange-50 hover:text-orange-700"
-              onClick={() => setOpen(false)}
-            >
-              {item.label}
-            </Link>
-          ))}
+        // Wrapper sits flush against the button (top-full, no margin gap) so its
+        // top padding is still part of the hoverable area — otherwise the empty
+        // gap between button and panel triggers onMouseLeave and closes the menu
+        // before the cursor ever reaches it.
+        <div className="absolute left-1/2 top-full z-10 w-56 -translate-x-1/2 pt-2">
+          <div className="rounded-xl bg-white p-2 shadow-lg ring-1 ring-gray-900/5">
+            {items.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="block rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-orange-50 hover:text-orange-700"
+                onClick={() => setOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
         </div>
       )}
     </div>
